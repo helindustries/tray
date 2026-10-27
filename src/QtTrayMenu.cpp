@@ -273,6 +273,10 @@ QIcon QtTrayMenu::lookupIcon(QString icon) const {
   // Find icon for tray
   if (std::filesystem::exists(icon.toStdString())) {
     if (auto result = QIcon(icon); !result.isNull()) {
+#ifdef Q_OS_MACOS
+      // A mask becomes a template image: the menu bar draws it monochrome, matching light and dark
+      result.setIsMask(true);
+#endif
       return result;
     }
   }
